@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # link eROSITA
-./Data/original_cats/eROSITA.csv
+Data/original_cats/eROSITA.csv
