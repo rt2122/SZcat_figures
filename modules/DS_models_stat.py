@@ -134,20 +134,27 @@ def stat_orig_cats(det_cats_dict, true_cats_dir,
     return comp_df, recall_df
 
 def make_histogram(ax, counts_list, bins, label_list=None, coef_list=None, log=True, 
-        add_legend=True, title='', histtype='step', alpha=1):
+        add_legend=True, title='', histtype='step', alpha=1, legend_loc="upper left", 
+        linestyles=None, colors=None):
     from DS_data_transformation import colors_iterator
     if coef_list is None:
         coef_list = [1] * len(counts_list)
     if label_list is None:
         label_list = [''] * len(counts_list)
+    if linestyles is None:
+        linestyles = ["-"] * len(counts_list)
     
     ci = colors_iterator()
     for i, counts in enumerate(counts_list):
-         ax.hist(bins[:-1], bins, weights=counts * coef_list[i], 
-                  histtype=histtype, log=log, label=label_list[i], color=next(ci), alpha=alpha)
+        c = next(ci)
+        if colors is not None:
+            c = colors[i]
+        ax.hist(bins[:-1], bins, weights=counts * coef_list[i], 
+                  histtype=histtype, log=log, label=label_list[i], color=c, alpha=alpha,
+                  linestyle=linestyles[i])
     ax.set_title(title)
     if add_legend:
-        ax.legend(loc='upper left')
+        ax.legend(loc=legend_loc)
 
 def calc_corr_b(det_cat, true_cat, small_rads=[0, 400/3600], big_rads=[1000/3600, 1500/3600], with_tqdm=False, 
         get_coefs=False):
